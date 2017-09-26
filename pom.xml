@@ -18,6 +18,7 @@
 
     <modules>
         <module>../jcoms</module>
+        <module>cache_api</module>
         <module>cache_service</module>
     </modules>
 
@@ -26,7 +27,6 @@
             <id>dev</id>
             <properties>
                 <env>dev</env>
-                <package.type>jar</package.type>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -37,7 +37,6 @@
             <id>prod</id>
             <properties>
                 <env>prod</env>
-                <package.type>war</package.type>
             </properties>
         </profile>
     </profiles>
