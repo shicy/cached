@@ -6,15 +6,20 @@ import java.io.Serializable;
  * 缓存对象
  * Created by shicy on 2017/9/28.
  */
-public class CacheVO implements Serializable {
+@SuppressWarnings("unused")
+public class CachedVO implements Serializable {
 
     private static final long serialVersionUID = 1002017092815400000L;
+
+    public final static String STORED = "STORED";
+    public final static String NOSTORED = "NOT_STORED";
+    public final static String ERROR = "ERROR";
 
     // 键名称
     private String key;
 
     // 存储的值
-    private Object value;
+    private String value;
 
     // 用于客户端存储额外信息
     private int flags;
@@ -27,11 +32,11 @@ public class CacheVO implements Serializable {
         this.key = key;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

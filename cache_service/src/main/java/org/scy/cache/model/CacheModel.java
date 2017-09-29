@@ -2,14 +2,13 @@ package org.scy.cache.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 数据模型
  * Created by shicy on 2017/9/10.
  */
-public class CacheModel extends CacheVO {
+public class CacheModel extends CachedVO {
 
     private static final long serialVersionUID = 1002017091000000000L;
 
@@ -26,7 +25,7 @@ public class CacheModel extends CacheVO {
         this.setCreatetime(new Date().getTime());
     }
 
-    public CacheModel(String key, Object value, int expires, int flags) {
+    public CacheModel(String key, String value, int expires, int flags) {
         this.setKey(key);
         this.setValue(value);
         this.setExpires(expires);
@@ -36,7 +35,6 @@ public class CacheModel extends CacheVO {
 
     /**
      * 获取过期时长
-     * @return
      */
     @JSONField(serialize = false)
     public int getExpires() {
@@ -45,7 +43,6 @@ public class CacheModel extends CacheVO {
 
     /**
      * 设置过期时长（毫秒）
-     * @param expires
      */
     public void setExpires(int expires) {
         this.expires = expires;
@@ -53,7 +50,6 @@ public class CacheModel extends CacheVO {
 
     /**
      * 获取创建时间
-     * @return
      */
     @JSONField(serialize = false)
     public long getCreatetime() {
@@ -62,7 +58,6 @@ public class CacheModel extends CacheVO {
 
     /**
      * 设置创建时间
-     * @param createtime
      */
     public void setCreatetime(long createtime) {
         this.createtime = createtime;
@@ -70,7 +65,6 @@ public class CacheModel extends CacheVO {
 
     /**
      * 获取更新时间
-     * @return
      */
     @JSONField(serialize = false)
     public long getUpdatetime() {
@@ -79,7 +73,6 @@ public class CacheModel extends CacheVO {
 
     /**
      * 设置更新时间
-     * @param updatetime
      */
     public void setUpdatetime(long updatetime) {
         this.updatetime = updatetime;

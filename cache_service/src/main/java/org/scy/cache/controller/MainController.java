@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.scy.cache.manager.CacheManager;
 import org.scy.cache.manager.CacheManagerFactory;
 import org.scy.cache.model.CacheModel;
+import org.scy.cache.model.CachedVO;
 import org.scy.common.utils.HttpUtilsEx;
 import org.scy.common.web.controller.BaseController;
 import org.scy.common.web.controller.HttpResult;
@@ -22,9 +23,9 @@ import java.util.List;
 @SuppressWarnings("all")
 public class MainController extends BaseController {
 
-    private final static String STORED = "STORED";
-    private final static String NOSTORED = "NOT_STORED";
-    private final static String ERROR = "ERROR";
+    private final static String STORED = CachedVO.STORED;
+    private final static String NOSTORED = CachedVO.NOSTORED;
+    private final static String ERROR = CachedVO.ERROR;
 
     // 管理类
     private CacheManager manager = CacheManagerFactory.getInstance();
@@ -75,7 +76,7 @@ public class MainController extends BaseController {
     @RequestMapping(value = "/set/{key}/{value}/{expires}", method = RequestMethod.POST)
     @ResponseBody
     public Object set(@PathVariable("key") String key, @PathVariable("value") String value,
-                      @PathVariable("expires") int expires) {
+            @PathVariable("expires") int expires) {
         return set(key, value, expires, 0);
     }
 
@@ -86,7 +87,7 @@ public class MainController extends BaseController {
     @RequestMapping(value = "/set/{key}/{value}/{expires}/{flags}", method = RequestMethod.POST)
     @ResponseBody
     public Object set(@PathVariable("key") String key, @PathVariable("value") String value,
-                      @PathVariable("expires") int expires, @PathVariable("flags") int flags) {
+            @PathVariable("expires") int expires, @PathVariable("flags") int flags) {
         if (StringUtils.isBlank(key))
             return HttpResult.error(ERROR);
         int result = manager.set(key, value, expires, flags);
@@ -382,7 +383,7 @@ public class MainController extends BaseController {
         if (StringUtils.isNotBlank(model.getKey()) && model.getValue() != null) {
             CacheModel cacheModel = manager.get(model.getKey());
             if (cacheModel != null) {
-                Object value = cacheModel.getValue();
+                String value = cacheModel.getValue();
                 value = (value == null) ? model.getValue() : ("" + value + model.getValue());
                 manager.update(model.getKey(), value, model.getExpires(), model.getFlags());
                 return HttpResult.ok(STORED);
@@ -423,7 +424,7 @@ public class MainController extends BaseController {
         if (StringUtils.isNotBlank(key) && value != null) {
             CacheModel cacheModel = manager.get(key);
             if (cacheModel != null) {
-                Object tempValue = cacheModel.getValue();
+                String tempValue = cacheModel.getValue();
                 tempValue = (tempValue == null) ? value : ("" + tempValue + value);
                 manager.update(key, tempValue, expires, flags);
                 return HttpResult.ok(STORED);
@@ -442,7 +443,7 @@ public class MainController extends BaseController {
         if (StringUtils.isNotBlank(model.getKey()) && model.getValue() != null) {
             CacheModel cacheModel = manager.get(model.getKey());
             if (cacheModel != null) {
-                Object value = cacheModel.getValue();
+                String value = cacheModel.getValue();
                 value = (value == null) ? model.getValue() : ("" + model.getValue() + value);
                 manager.update(model.getKey(), value, model.getExpires(), model.getFlags());
                 return HttpResult.ok(STORED);
@@ -483,7 +484,7 @@ public class MainController extends BaseController {
         if (StringUtils.isNotBlank(key) && value != null) {
             CacheModel model = manager.get(key);
             if (model != null) {
-                Object tempValue = model.getValue();
+                String tempValue = model.getValue();
                 tempValue = (tempValue == null) ? value : ("" + value + tempValue);
                 manager.update(key, tempValue, expires, flags);
                 return HttpResult.ok(STORED);

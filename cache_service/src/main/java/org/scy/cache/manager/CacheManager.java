@@ -17,9 +17,9 @@ public interface CacheManager {
      * @return 0-失败 1-成功
      */
     int add(CacheModel model);
-    int add(String key, Object value);
-    int add(String key, Object value, int expires);
-    int add(String key, Object value, int expires, int flags);
+    int add(String key, String value);
+    int add(String key, String value, int expires);
+    int add(String key, String value, int expires, int flags);
 
     /**
      * 修改缓存对象
@@ -27,9 +27,9 @@ public interface CacheManager {
      * @return 0-失败 1-成功
      */
     int update(CacheModel model);
-    int update(String key, Object value);
-    int update(String key, Object value, int expires);
-    int update(String key, Object value, int expires, int flags);
+    int update(String key, String value);
+    int update(String key, String value, int expires);
+    int update(String key, String value, int expires, int flags);
 
     /**
      * 设置缓存对象
@@ -37,9 +37,9 @@ public interface CacheManager {
      * @return 0-失败 1-新增 2-修改
      */
     int set(CacheModel model);
-    int set(String key, Object value);
-    int set(String key, Object value, int expires);
-    int set(String key, Object value, int expires, int flags);
+    int set(String key, String value);
+    int set(String key, String value, int expires);
+    int set(String key, String value, int expires, int flags);
 
     /**
      * 获取一个对象

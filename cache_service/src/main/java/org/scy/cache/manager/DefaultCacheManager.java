@@ -35,17 +35,17 @@ public class DefaultCacheManager implements CacheManager {
     }
 
     @Override
-    public int add(String key, Object value) {
+    public int add(String key, String value) {
         return add(key, value, 0, 0);
     }
 
     @Override
-    public int add(String key, Object value, int expires) {
+    public int add(String key, String value, int expires) {
         return add(key, value, expires, 0);
     }
 
     @Override
-    public int add(String key, Object value, int expires, int flags) {
+    public int add(String key, String value, int expires, int flags) {
         CacheModel model = get(key);
         if (model != null)
             return 0;
@@ -63,17 +63,17 @@ public class DefaultCacheManager implements CacheManager {
     }
 
     @Override
-    public int update(String key, Object value) {
+    public int update(String key, String value) {
         return update(key, value, 0, 0);
     }
 
     @Override
-    public int update(String key, Object value, int expires) {
+    public int update(String key, String value, int expires) {
         return update(key, value, expires, 0);
     }
 
     @Override
-    public int update(String key, Object value, int expires, int flags) {
+    public int update(String key, String value, int expires, int flags) {
         CacheModel model = get(key);
         if (model != null) {
             model.setValue(value);
@@ -92,17 +92,17 @@ public class DefaultCacheManager implements CacheManager {
     }
 
     @Override
-    public int set(String key, Object value) {
+    public int set(String key, String value) {
         return set(key, value, 0, 0);
     }
 
     @Override
-    public int set(String key, Object value, int expires) {
+    public int set(String key, String value, int expires) {
         return set(key, value, expires, 0);
     }
 
     @Override
-    public int set(String key, Object value, int expires, int flags) {
+    public int set(String key, String value, int expires, int flags) {
         CacheModel model = get(key);
         if (model == null) {
             caches.add(new CacheModel(key, value, expires, flags));
