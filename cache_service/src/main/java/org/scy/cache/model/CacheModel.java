@@ -12,7 +12,7 @@ public class CacheModel extends CachedVO {
 
     private static final long serialVersionUID = 1002017091000000000L;
 
-    // 过期时间（毫秒），为 0 时永不过期
+    // 过期时间（秒），为 0 时永不过期
     private int expires;
 
     // 存储时间
@@ -42,7 +42,7 @@ public class CacheModel extends CachedVO {
     }
 
     /**
-     * 设置过期时长（毫秒）
+     * 设置过期时长（秒）
      */
     public void setExpires(int expires) {
         this.expires = expires;
