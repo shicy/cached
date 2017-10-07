@@ -30,6 +30,11 @@ public final class CachedClientAdapter {
         return result.getData(CachedVO.class);
     }
 
+    public static String getValue(String key) {
+        CachedVO cachedVO = get(key);
+        return cachedVO != null ? cachedVO.getValue() : null;
+    }
+
     public static boolean set(String key, String value) {
         HttpResult result = cachedClient.set(key, value);
         return CachedVO.STORED.equals(result.getData());
