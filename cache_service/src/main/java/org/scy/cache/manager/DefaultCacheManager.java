@@ -20,12 +20,13 @@ public class DefaultCacheManager implements CacheManager {
     private Logger logger = LoggerFactory.getLogger(DefaultCacheManager.class);
 
     // 缓存对象集
-    private List<CacheModel> caches = new ArrayList<CacheModel>();
+    private List<String> cacheKeys = new ArrayList<String>();
+    private Map<String, CacheModel> cacheModels = new HashMap<String, CacheModel>();
 
     /**
      * 构造方法
      */
-    public DefaultCacheManager() {
+    DefaultCacheManager() {
         this.startClearTask();
     }
 
@@ -46,11 +47,12 @@ public class DefaultCacheManager implements CacheManager {
 
     @Override
     public int add(String key, String value, int expires, int flags) {
-        CacheModel model = get(key);
+        CacheModel model = this.get(key);
         if (model != null)
             return 0;
         if (StringUtils.isNotBlank(key)) {
-            caches.add(new CacheModel(key, value, expires, flags));
+            cacheKeys.add(key);
+            cacheModels.put(key, new CacheModel(key, value, expires, flags));
             return 1;
         }
         logger.error("error add, the 'key' must not empty [" + key + "]");
@@ -74,7 +76,7 @@ public class DefaultCacheManager implements CacheManager {
 
     @Override
     public int update(String key, String value, int expires, int flags) {
-        CacheModel model = get(key);
+        CacheModel model = this.get(key);
         if (model != null) {
             model.setValue(value);
             model.setExpires(expires);
@@ -103,9 +105,10 @@ public class DefaultCacheManager implements CacheManager {
 
     @Override
     public int set(String key, String value, int expires, int flags) {
-        CacheModel model = get(key);
+        CacheModel model = this.get(key);
         if (model == null) {
-            caches.add(new CacheModel(key, value, expires, flags));
+            cacheKeys.add(key);
+            cacheModels.put(key, new CacheModel(key, value, expires, flags));
             return 1;
         }
         if (StringUtils.isNotBlank(key)) {
@@ -122,11 +125,9 @@ public class DefaultCacheManager implements CacheManager {
     @Override
     public CacheModel get(String key) {
         if (StringUtils.isNotBlank(key)) {
-            for (CacheModel model: caches) {
-                if (key.equals(model.getKey())) {
-                    return isModelOverdue(model) ? null : model;
-                }
-            }
+            CacheModel model = cacheModels.get(key);
+            if (model != null && !isModelOverdue(model))
+                return model;
         }
         return null;
     }
@@ -135,8 +136,9 @@ public class DefaultCacheManager implements CacheManager {
     public List<CacheModel> getLike(String key) {
         if (StringUtils.isNotBlank(key)) {
             List<CacheModel> models = new ArrayList<CacheModel>();
-            for (CacheModel model: caches) {
-                if (StringUtils.indexOf(model.getKey(), key) >= 0) {
+            for (String _key: cacheKeys) {
+                if (StringUtils.contains(_key, key)) {
+                    CacheModel model = cacheModels.get(_key);
                     if (!isModelOverdue(model))
                         models.add(model);
                 }
@@ -150,8 +152,9 @@ public class DefaultCacheManager implements CacheManager {
     public List<CacheModel> getLikeStart(String key) {
         if (StringUtils.isNotBlank(key)) {
             List<CacheModel> models = new ArrayList<CacheModel>();
-            for (CacheModel model: caches) {
-                if (StringUtils.startsWith(model.getKey(), key)) {
+            for (String _key: cacheKeys) {
+                if (StringUtils.startsWith(_key, key)) {
+                    CacheModel model = cacheModels.get(_key);
                     if (!isModelOverdue(model))
                         models.add(model);
                 }
@@ -165,8 +168,9 @@ public class DefaultCacheManager implements CacheManager {
     public List<CacheModel> getLikeEnd(String key) {
         if (StringUtils.isNotBlank(key)) {
             List<CacheModel> models = new ArrayList<CacheModel>();
-            for (CacheModel model: caches) {
-                if (StringUtils.endsWith(model.getKey(), key)) {
+            for (String _key: cacheKeys) {
+                if (StringUtils.endsWith(_key, key)) {
+                    CacheModel model = cacheModels.get(_key);
                     if (!isModelOverdue(model))
                         models.add(model);
                 }
@@ -179,11 +183,12 @@ public class DefaultCacheManager implements CacheManager {
     @Override
     public CacheModel delete(String key) {
         if (StringUtils.isNotBlank(key)) {
-            for (int i = caches.size() - 1; i >= 0; i--) {
-                if (key.equals(caches.get(i).getKey())) {
-                    return caches.remove(i);
-                }
+            CacheModel model = cacheModels.remove(key);
+            if (model != null) {
+                cacheKeys.remove(key);
             }
+            if (!isModelOverdue(model))
+                return model;
         }
         return null;
     }
@@ -192,9 +197,13 @@ public class DefaultCacheManager implements CacheManager {
     public List<CacheModel> deleteLike(String key) {
         if (StringUtils.isNotBlank(key)) {
             List<CacheModel> models = new ArrayList<CacheModel>();
-            for (int i = caches.size() - 1; i >= 0; i--) {
-                if (StringUtils.indexOf(caches.get(i).getKey(), key) >= 0) {
-                    models.add(caches.remove(i));
+            for (int i = cacheKeys.size() - 1; i >= 0; i--) {
+                String _key = cacheKeys.get(i);
+                if (StringUtils.contains(_key, key)) {
+                    cacheKeys.remove(i);
+                    CacheModel model = cacheModels.remove(_key);
+                    if (!isModelOverdue(model))
+                        models.add(model);
                 }
             }
             return models;
@@ -206,9 +215,13 @@ public class DefaultCacheManager implements CacheManager {
     public List<CacheModel> deleteLikeStart(String key) {
         if (StringUtils.isNotBlank(key)) {
             List<CacheModel> models = new ArrayList<CacheModel>();
-            for (int i = caches.size() - 1; i >= 0; i--) {
-                if (StringUtils.startsWith(caches.get(i).getKey(), key)) {
-                    models.add(caches.remove(i));
+            for (int i = cacheKeys.size() - 1; i >= 0; i--) {
+                String _key = cacheKeys.get(i);
+                if (StringUtils.startsWith(_key, key)) {
+                    cacheKeys.remove(i);
+                    CacheModel model = cacheModels.remove(_key);
+                    if (!isModelOverdue(model))
+                        models.add(model);
                 }
             }
             return models;
@@ -220,9 +233,13 @@ public class DefaultCacheManager implements CacheManager {
     public List<CacheModel> deleteLikeEnd(String key) {
         if (StringUtils.isNotBlank(key)) {
             List<CacheModel> models = new ArrayList<CacheModel>();
-            for (int i = caches.size() - 1; i >= 0; i--) {
-                if (StringUtils.endsWith(caches.get(i).getKey(), key)) {
-                    models.add(caches.remove(i));
+            for (int i = cacheKeys.size() - 1; i >= 0; i--) {
+                String _key = cacheKeys.get(i);
+                if (StringUtils.endsWith(_key, key)) {
+                    cacheKeys.remove(i);
+                    CacheModel model = cacheModels.remove(_key);
+                    if (!isModelOverdue(model))
+                        models.add(model);
                 }
             }
             return models;
@@ -257,19 +274,27 @@ public class DefaultCacheManager implements CacheManager {
     }
 
     /**
+     * 清理，删除过期对象
+     */
+    private void clear() {
+        for (int i = cacheKeys.size() - 1; i >= 0; i--) {
+            String _key = cacheKeys.get(i);
+            CacheModel model = cacheModels.get(_key);
+            if (isModelOverdue(model)) {
+                cacheKeys.remove(i);
+                cacheModels.remove(_key);
+            }
+        }
+    }
+
+    /**
      * 缓存定时清理任务
      */
     public static class ClearTask extends SchedulerManager.ThreadJob {
         @Override
         protected void executeJob(JobDataMap data) throws JobExecutionException {
             DefaultCacheManager manager = (DefaultCacheManager) data.get("cacheManager");
-            List<CacheModel> models = manager.caches;
-            for (int i = models.size() - 1; i >= 0; i--) {
-                CacheModel model = models.get(i);
-                if (manager.isModelOverdue(model)) {
-                    models.remove(i);
-                }
-            }
+            manager.clear();
         }
     }
 
