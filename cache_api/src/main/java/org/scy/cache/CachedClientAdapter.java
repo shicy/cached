@@ -54,4 +54,19 @@ public final class CachedClientAdapter {
         return cachedClient.delete(key);
     }
 
+    public static boolean replace(String key, String value) {
+        HttpResult result = cachedClient.replace(key, value);
+        return CachedVO.STORED.equals(result.getData());
+    }
+
+    public static boolean replace(String key, String value, int expires) {
+        HttpResult result = cachedClient.replace(key, value, expires);
+        return CachedVO.STORED.equals(result.getData());
+    }
+
+    public static boolean replace(String key, String value, int expires, int flags) {
+        HttpResult result = cachedClient.replace(key, value, expires, flags);
+        return CachedVO.STORED.equals(result.getData());
+    }
+
 }

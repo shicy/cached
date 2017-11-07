@@ -32,4 +32,16 @@ public interface CachedClient {
     @RequestMapping(value = "delete/{key}", method = RequestMethod.POST)
     HttpResult delete(@PathVariable("key") String key);
 
+
+    @RequestMapping(value = "replace/{key}/{value}", method = RequestMethod.POST)
+    HttpResult replace(@PathVariable("key") String key, @PathVariable("value") String value);
+
+    @RequestMapping(value = "replace/{key}/{value}/{expires}", method = RequestMethod.POST)
+    HttpResult replace(@PathVariable("key") String key, @PathVariable("value") String value,
+            @PathVariable("expires") int expires);
+
+    @RequestMapping(value = "replace/{key}/{value}/{expires}/{flags}", method = RequestMethod.POST)
+    HttpResult replace(@PathVariable("key") String key, @PathVariable("value") String value,
+            @PathVariable("expires") int expires, @PathVariable("flags") int flags);
+
 }
