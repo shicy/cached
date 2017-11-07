@@ -268,6 +268,7 @@ public class DefaultCacheManager implements CacheManager {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("cacheManager", this);
 
+        // 每分钟执行一次
         Trigger trigger = SchedulerManager.newCronTrigger("0 * * * * ? *");
 
         SchedulerManager.getInstance().addScheduleJob(ClearTask.class, trigger, data);
@@ -293,8 +294,7 @@ public class DefaultCacheManager implements CacheManager {
     public static class ClearTask extends SchedulerManager.ThreadJob {
         @Override
         protected void executeJob(JobDataMap data) throws JobExecutionException {
-            DefaultCacheManager manager = (DefaultCacheManager) data.get("cacheManager");
-            manager.clear();
+            ((DefaultCacheManager) data.get("cacheManager")).clear();
         }
     }
 
