@@ -14,7 +14,7 @@ import java.util.List;
  * Created by shicy on 2017/9/30.
  */
 @Component
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings("unused")
 public final class CachedClientAdapter {
 
     private static CachedClient cachedClient;
@@ -165,6 +165,7 @@ public final class CachedClientAdapter {
         return CachedVO.STORED.equals(result.getData());
     }
 
+    @SuppressWarnings("unchecked")
     private static CachedVO[] getResultDatas(HttpResult result) {
         Object resultData = result.getData();
         if (resultData != null) {
@@ -176,7 +177,7 @@ public final class CachedClientAdapter {
                 //
             }
         }
-        return new CachedVO[0];
+        return null;
     }
 
 }
