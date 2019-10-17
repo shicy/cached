@@ -30,3 +30,7 @@
 ### 打包发布
 mvn clean package -f pom.xml -P prod   
 IDEL 配置选项 Profiles 为 prod
+
+### 部署
+cd ../cached/cache_service/target   
+scp cached.war root@47.111.123.77:/mnt/service/cached.war
