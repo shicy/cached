@@ -26,3 +26,7 @@
 运行 org.scy.cache.App
 
 需要引用`jcoms`项目
+
+### 打包发布
+mvn clean package -f pom.xml -P prod   
+IDEL 配置选项 Profiles 为 prod
