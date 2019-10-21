@@ -17,9 +17,4 @@ public class App extends BaseApplication {
         BaseApplication.startup(App.class, args);
     }
 
-    public App() {
-        super();
-        this.run();
-    }
-
 }
