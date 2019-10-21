@@ -19,9 +19,7 @@ public class App extends BaseApplication {
 
     public App() {
         super();
-        System.out.println("333333333333333333");
-        this.run(new String[]{});
+        this.run();
     }
-
 
 }
