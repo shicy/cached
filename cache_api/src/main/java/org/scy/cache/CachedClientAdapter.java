@@ -1,13 +1,13 @@
 package org.scy.cache;
 
 import org.scy.cache.model.CachedVO;
+import org.scy.common.exception.ResultException;
 import org.scy.common.utils.ArrayUtilsEx;
 import org.scy.common.web.controller.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 /**
  * 缓存客户端适配器
@@ -32,6 +32,7 @@ public final class CachedClientAdapter {
      */
     public static CachedVO get(String key) {
         HttpResult result = cachedClient.get(key);
+        checkResult(result);
         return result.getData(CachedVO.class);
     }
 
@@ -41,7 +42,8 @@ public final class CachedClientAdapter {
      */
     public static CachedVO[] get(String[] keys) {
         HttpResult result = cachedClient.gets(ArrayUtilsEx.join(keys, ","));
-        return getResultDatas(result);
+        checkResult(result);
+        return result.getDatas(CachedVO.class);
     }
 
     /**
@@ -49,6 +51,7 @@ public final class CachedClientAdapter {
      */
     public static String getValue(String key) {
         HttpResult result = cachedClient.get(key);
+        checkResult(result);
         CachedVO cachedVO = result.getData(CachedVO.class);
         return cachedVO != null ? cachedVO.getValue() : null;
     }
@@ -60,6 +63,7 @@ public final class CachedClientAdapter {
      */
     public static boolean set(String key, String value) {
         HttpResult result = cachedClient.set(key, value);
+        checkResult(result);
         return CachedVO.STORED.equals(result.getData());
     }
 
@@ -71,6 +75,7 @@ public final class CachedClientAdapter {
      */
     public static boolean set(String key, String value, int expires) {
         HttpResult result = cachedClient.set(key, value, expires);
+        checkResult(result);
         return CachedVO.STORED.equals(result.getData());
     }
 
@@ -83,6 +88,7 @@ public final class CachedClientAdapter {
      */
     public static boolean set(String key, String value, int expires, int flags) {
         HttpResult result = cachedClient.set(key, value, expires, flags);
+        checkResult(result);
         return CachedVO.STORED.equals(result.getData());
     }
 
@@ -92,6 +98,7 @@ public final class CachedClientAdapter {
      */
     public static CachedVO delete(String key) {
         HttpResult result = cachedClient.delete(key);
+        checkResult(result);
         return (CachedVO)result.getData();
     }
 
@@ -102,7 +109,8 @@ public final class CachedClientAdapter {
      */
     public static CachedVO[] delete(String[] keys) {
         HttpResult result = cachedClient.deletes(ArrayUtilsEx.join(keys, ","));
-        return getResultDatas(result);
+        checkResult(result);
+        return result.getDatas(CachedVO.class);
     }
 
     /**
@@ -111,7 +119,8 @@ public final class CachedClientAdapter {
      */
     public static CachedVO[] deleteLike(String key) {
         HttpResult result = cachedClient.deleteLike(key);
-        return getResultDatas(result);
+        checkResult(result);
+        return result.getDatas(CachedVO.class);
     }
 
     /**
@@ -120,7 +129,8 @@ public final class CachedClientAdapter {
      */
     public static CachedVO[] deleteStart(String key) {
         HttpResult result = cachedClient.deleteStart(key);
-        return getResultDatas(result);
+        checkResult(result);
+        return result.getDatas(CachedVO.class);
     }
 
     /**
@@ -129,7 +139,8 @@ public final class CachedClientAdapter {
      */
     public static CachedVO[] deleteEnd(String key) {
         HttpResult result = cachedClient.deleteEnd(key);
-        return getResultDatas(result);
+        checkResult(result);
+        return result.getDatas(CachedVO.class);
     }
 
     /**
@@ -139,6 +150,7 @@ public final class CachedClientAdapter {
      */
     public static boolean replace(String key, String value) {
         HttpResult result = cachedClient.replace(key, value);
+        checkResult(result);
         return CachedVO.STORED.equals(result.getData());
     }
 
@@ -150,6 +162,7 @@ public final class CachedClientAdapter {
      */
     public static boolean replace(String key, String value, int expires) {
         HttpResult result = cachedClient.replace(key, value, expires);
+        checkResult(result);
         return CachedVO.STORED.equals(result.getData());
     }
 
@@ -162,22 +175,13 @@ public final class CachedClientAdapter {
      */
     public static boolean replace(String key, String value, int expires, int flags) {
         HttpResult result = cachedClient.replace(key, value, expires, flags);
+        checkResult(result);
         return CachedVO.STORED.equals(result.getData());
     }
 
-    @SuppressWarnings("unchecked")
-    private static CachedVO[] getResultDatas(HttpResult result) {
-        Object resultData = result.getData();
-        if (resultData != null) {
-            try {
-                List<CachedVO> datas = (List<CachedVO>)resultData;
-                return datas.toArray(new CachedVO[0]);
-            }
-            catch (Exception e) {
-                //
-            }
-        }
-        return null;
+    private static void checkResult(HttpResult httpResult) {
+        if (httpResult.getCode() != HttpResult.OK)
+            throw new ResultException(httpResult);
     }
 
 }
