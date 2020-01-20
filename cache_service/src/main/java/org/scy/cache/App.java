@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
         exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class App extends BaseApplication {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         BaseApplication.startup(App.class, args);
     }
 

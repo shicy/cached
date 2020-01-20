@@ -6,9 +6,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 /**
  * 部署到 tomcat 时 SpringBoot 启动类
  * Created by shicy on 2017/9/22.
