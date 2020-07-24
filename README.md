@@ -25,12 +25,15 @@
 ### 启动服务
 运行 org.scy.cache.App
 
+测试环境：spring.profiles.active=dev
+
 需要引用`jcoms`项目
 
-### 打包发布
+### 打包
 mvn clean package -f pom.xml -P prod   
 IDEL 配置选项 Profiles 为 prod
 
 ### 部署
-cd ../cached/cache_service/target   
-scp cached.war root@47.111.123.77:/mnt/service/cached.war
+本地执行`./build/deploy_remote`
+
+或登录服务器，进入当前目录，执行`./build/deploy`命令
