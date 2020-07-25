@@ -45,8 +45,8 @@ docker run -itd \
     -p 12030:12030 \
     -v /mnt/logs/cached:/mnt/app/logs \
     --name cached \
-    --network mynet
-    --ip 172.2.2.2
+    --network mynet \
+    --ip 172.2.2.2 \
     shicy/cached:${version}
 
 echo -e "\n> 成功！！"

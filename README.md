@@ -34,6 +34,8 @@ mvn clean package -f pom.xml -P prod
 IDEL 配置选项 Profiles 为 prod
 
 ### 部署
+安装网络`docker network create -d bridge --subnet 172.2.2.0/24 mynet`
+
 本地执行`./build/deploy_remote`
 
-或登录服务器，进入当前目录，执行`./build/deploy`命令
+或登录服务器，进入`build`目录，执行`./deploy`命令
