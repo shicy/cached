@@ -4,7 +4,7 @@ FROM java:8
 WORKDIR /mnt/app
 
 # 复制打包好的项目执行文件
-COPY cache_service/target/cached-*.jar ./cached.jar
+COPY cache_service/target/cached-*.jar ./app.jar
 
 # 默认挂载日志目录
 VOLUME /mnt/app/logs
@@ -17,4 +17,4 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo Asia/Shanghai > /etc/timezone
 
 # 容器启动开始允许项目
-ENTRYPOINT exec java -jar cached.jar
+ENTRYPOINT exec java -jar app.jar

@@ -13,7 +13,7 @@ fi
 
 # 远程执行
 ssh root@www.scyok.com << remotessh
-cd /mnt/src/cached
-./build/deploy $profile $version
+cd /mnt/src/cached/build
+./deploy $profile $version
 exit
 remotessh
