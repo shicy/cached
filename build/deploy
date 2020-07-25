@@ -13,17 +13,17 @@ fi
 
 # 转到根目录
 cd ..
-echo -e 目录：`pwd`
+echo -e "目录: "`pwd`
 
 # 更新代码
 echo -e "\n> 代码同步"
 cd ../jcoms
-echo -e pull src jcoms：`pwd`
+echo -e pull src jcoms: `pwd`
 git pull
 echo -e done.
 
 cd ../cached
-echo -e pull src cached：`pwd`
+echo -e pull src cached: `pwd`
 git pull
 echo -e done.
 
@@ -49,4 +49,4 @@ docker run -itd \
     --ip 172.2.2.2 \
     shicy/cached:${version}
 
-echo -e "\n> 成功！！"
+echo -e "\n> 完成！！"
