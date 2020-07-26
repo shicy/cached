@@ -8,7 +8,7 @@ if [ ! $1 ]; then
 fi
 
 if [ ! $2 ]; then
-	version="1.0.3"
+	version="1.0.4"
 fi
 
 # 转到根目录
@@ -43,7 +43,7 @@ docker rmi shicy/cached:${version}
 
 docker build -t shicy/cached:${version} .
 docker run -itd \
-    -p 12030:12030 \
+    -p 12302:12302 \
     -v /mnt/logs/cached:/mnt/app/logs \
     --name cached \
     --network mynet \

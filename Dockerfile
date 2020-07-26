@@ -9,8 +9,8 @@ COPY cache_service/target/cached-*.jar ./app.jar
 # 默认挂载日志目录
 VOLUME /mnt/app/logs
 
-# 开放端口 12030
-EXPOSE 12030
+# 开放端口 12302
+EXPOSE 12302
 
 # 设置时区，添加时区软连接
 RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
