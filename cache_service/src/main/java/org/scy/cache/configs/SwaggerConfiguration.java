@@ -1,4 +1,4 @@
-package org.scy.cache;
+package org.scy.cache.configs;
 
 import org.scy.common.configs.BaseSwaggerConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @Profile({"dev"})
+@SuppressWarnings("unused")
 public class SwaggerConfiguration extends BaseSwaggerConfiguration {
     @Override
     protected String getTitle() {
