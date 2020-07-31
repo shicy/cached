@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @SuppressWarnings("unused")
 public class IndexController extends BaseController {
 
+    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
+    public String index() {
+        return "web/index.html";
+    }
+
     @RequestMapping(value = "/version", method = RequestMethod.GET)
     @ResponseBody
-    public Object index() {
+    public Object version() {
         return HttpResult.ok(getAppVersion());
     }
 
