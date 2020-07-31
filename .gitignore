@@ -3,3 +3,6 @@
 cache_api/target
 cache_service/target
 logs
+web/node_modules
+cache_service/src/main/resources/static/web
+package-lock.json
