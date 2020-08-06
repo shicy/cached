@@ -1,6 +1,7 @@
 package org.scy.cache.manager;
 
 import org.scy.cache.model.CacheModel;
+import org.scy.common.ds.PageInfo;
 
 import java.util.List;
 
@@ -60,5 +61,8 @@ public interface CacheManager {
     List<CacheModel> deleteLike(String key);
     List<CacheModel> deleteLikeStart(String key);
     List<CacheModel> deleteLikeEnd(String key);
+
+    int getTotal(String keyLike);
+    List<CacheModel> list(String keyLike, PageInfo pageInfo);
 
 }

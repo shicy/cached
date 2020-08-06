@@ -2,9 +2,9 @@ package org.scy.cache.manager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobDataMap;
-import org.quartz.JobExecutionException;
 import org.quartz.Trigger;
 import org.scy.cache.model.CacheModel;
+import org.scy.common.ds.PageInfo;
 import org.scy.common.manager.SchedulerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +17,11 @@ import java.util.*;
  */
 public class DefaultCacheManager implements CacheManager {
 
-    private Logger logger = LoggerFactory.getLogger(DefaultCacheManager.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultCacheManager.class);
 
     // 缓存对象集
-    private List<String> cacheKeys = new ArrayList<String>();
-    private Map<String, CacheModel> cacheModels = new HashMap<String, CacheModel>();
+    private final List<String> cacheKeys = new ArrayList<String>();
+    private final Map<String, CacheModel> cacheModels = new HashMap<String, CacheModel>();
 
     /**
      * 构造方法
@@ -186,9 +186,9 @@ public class DefaultCacheManager implements CacheManager {
             CacheModel model = cacheModels.remove(key);
             if (model != null) {
                 cacheKeys.remove(key);
+                if (!isModelOverdue(model))
+                    return model;
             }
-            if (!isModelOverdue(model))
-                return model;
         }
         return null;
     }
@@ -247,6 +247,49 @@ public class DefaultCacheManager implements CacheManager {
         return null;
     }
 
+    @Override
+    public int getTotal(String keyLike) {
+        if (StringUtils.isNotBlank(keyLike)) {
+            int count = 0;
+            for (String key: cacheKeys) {
+                if (key.contains(keyLike))
+                    count += 1;
+            }
+            return count;
+        }
+        return cacheKeys.size();
+    }
+
+    @Override
+    public List<CacheModel> list(String keyLike, PageInfo pageInfo) {
+        List<CacheModel> models = new ArrayList<CacheModel>();
+        int start = pageInfo.getPageStart();
+        if (StringUtils.isBlank(keyLike)) {
+            int end = pageInfo.getPageEnd();
+            for (int i = start; i < end; i++) {
+                if (i < cacheKeys.size()) {
+                    String key = cacheKeys.get(i);
+                    models.add(cacheModels.get(key));
+                }
+            }
+        }
+        else {
+            int index = -1;
+            int count = pageInfo.getSize();
+            for (String key: cacheKeys) {
+                if (key.contains(keyLike)) {
+                    index += 1;
+                    if (index >= start) {
+                        models.add(cacheModels.get(key));
+                        if (models.size() >= count)
+                            break;
+                    }
+                }
+            }
+        }
+        return models;
+    }
+
     /**
      * 判断模型是否过期
      * @param model 缓存对象
@@ -293,7 +336,7 @@ public class DefaultCacheManager implements CacheManager {
      */
     public static class ClearTask extends SchedulerManager.ThreadJob {
         @Override
-        protected void executeJob(JobDataMap data) throws JobExecutionException {
+        protected void executeJob(JobDataMap data) {
             ((DefaultCacheManager) data.get("cacheManager")).clear();
         }
     }

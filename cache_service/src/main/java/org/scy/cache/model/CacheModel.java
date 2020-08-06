@@ -8,6 +8,7 @@ import java.util.Date;
  * 数据模型
  * Created by shicy on 2017/9/10.
  */
+@SuppressWarnings("unused")
 public class CacheModel extends CachedVO {
 
     private static final long serialVersionUID = 1002017091000000000L;
