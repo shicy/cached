@@ -80,15 +80,15 @@ public class IndexController extends BaseController {
             modelList.add(new CacheModel4Admin(model));
         }
 
-//        pageInfo.setTotal(103);
-//        for (int i = pageInfo.getPageStart(); i < pageInfo.getPageEnd(); i++) {
-//            CacheModel model = new CacheModel();
-//            model.setKey("key_" + keyLike + "_" + i);
-//            model.setValue("Value-" + i);
-//            model.setExpires(1000);
-//            model.setCreatetime(new Date().getTime());
-//            modelList.add(new CacheModel4Admin(model));
-//        }
+        pageInfo.setTotal(103);
+        for (int i = pageInfo.getPageStart(); i < pageInfo.getPageEnd(); i++) {
+            CacheModel model = new CacheModel();
+            model.setKey("key_" + keyLike + "_" + i);
+            model.setValue("Value-" + i);
+            model.setExpires(1000);
+            model.setCreatetime(new Date().getTime());
+            modelList.add(new CacheModel4Admin(model));
+        }
 
         return HttpResult.ok(modelList, pageInfo);
     }
@@ -100,8 +100,8 @@ public class IndexController extends BaseController {
     }
 
     private Object checkAdminToken(String token) {
-//        if (this.isDev())
-//            return null;
+        if (this.isDev() && "112233445566".equals(adminToken))
+            return null;
         if (StringUtils.isBlank(token) || StringUtils.isBlank(adminToken))
             return HttpResult.error(401, "请登录");
         if (!adminToken.equals(token))

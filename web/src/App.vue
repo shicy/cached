@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { isDev } from "@/framework/Context";
 import Index from "./views/index/Index.vue";
 import Login from "./views/Login.vue";
 
@@ -26,7 +27,7 @@ export default {
 
   mounted() {
     this.beInit = true;
-    this.accessToken = "112233445566";
+    this.accessToken = !isDev() ? "112233445566" : "";
   },
 
   computed: {
