@@ -70,6 +70,7 @@ export default {
       this.loadingFlag = true;
       $post(api("/login/by/admin"), params)
         .then(({ data: token }) => {
+          // console.log("==>", token);
           this.loadingFlag = false;
           this.$emit("login", token);
         })
