@@ -100,7 +100,7 @@ public class IndexController extends BaseController {
     }
 
     private Object checkAdminToken(String token) {
-        if (this.isDev() && "112233445566".equals(adminToken))
+        if (this.isDev() && "112233445566".equals(token))
             return null;
         if (StringUtils.isBlank(token) || StringUtils.isBlank(adminToken))
             return HttpResult.error(401, "请登录");

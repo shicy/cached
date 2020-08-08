@@ -27,7 +27,7 @@ export default {
 
   mounted() {
     this.beInit = true;
-    this.accessToken = !isDev() ? "112233445566" : "";
+    this.accessToken = isDev() ? "112233445566" : "";
   },
 
   computed: {
