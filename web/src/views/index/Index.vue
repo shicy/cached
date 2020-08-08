@@ -31,7 +31,7 @@ import { api } from "@/framework/Context";
 import PageHeader from "./PageHeader.vue";
 
 const searchItems = [
-  { name: "name", placeholder: "输入键名模糊查询", width: 0 }
+  { name: "keyLike", placeholder: "输入键名模糊查询", width: 0 }
 ];
 
 const tableColumns = [
