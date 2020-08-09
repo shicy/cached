@@ -44,21 +44,8 @@
   }
 
   th {
-    font-weight: normal;
-    border: 1px solid rgba(51, 188, 238, 0.35);
+    border-bottom: 1px solid rgba(51, 188, 238, 0.35);
     background-color: rgba(51, 188, 238, 0.15);
-  }
-
-  td {
-    height: 40px;
-  }
-
-  .ivu-table-header {
-    th {
-      height: 32px;
-      padding-top: 0px;
-      padding-bottom: 0px;
-    }
   }
 }
 

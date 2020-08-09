@@ -35,12 +35,12 @@ const searchItems = [
 ];
 
 const tableColumns = [
-  { key: "key", title: "键名" },
-  { key: "value", title: "值" },
+  { key: "key", title: "键名", width: 200 },
+  { key: "value", title: "值", width: 220 },
   { key: "flags", title: "标志", width: 100 },
   { key: "expires", title: "有效期（秒）", width: 150 },
-  { key: "deadline", title: "过期时间" },
-  { key: "createTime", title: "创建时间" },
+  { key: "deadline", title: "过期时间", width: 180 },
+  { key: "createTime", title: "创建时间", width: 180 },
   { key: "updateTime", title: "更新时间" }
 ];
 
