@@ -80,14 +80,16 @@ public class IndexController extends BaseController {
             modelList.add(new CacheModel4Admin(model));
         }
 
-        pageInfo.setTotal(103);
-        for (int i = pageInfo.getPageStart(); i < pageInfo.getPageEnd(); i++) {
-            CacheModel model = new CacheModel();
-            model.setKey("key_" + keyLike + "_" + i);
-            model.setValue("Value-" + i);
-            model.setExpires(1000);
-            model.setCreatetime(new Date().getTime());
-            modelList.add(new CacheModel4Admin(model));
+        if (isDev()) {
+            pageInfo.setTotal(103);
+            for (int i = pageInfo.getPageStart(); i < pageInfo.getPageEnd(); i++) {
+                CacheModel model = new CacheModel();
+                model.setKey("key_" + keyLike + "_" + i);
+                model.setValue("Value-" + i);
+                model.setExpires(1000);
+                model.setCreatetime(new Date().getTime());
+                modelList.add(new CacheModel4Admin(model));
+            }
         }
 
         return HttpResult.ok(modelList, pageInfo);
