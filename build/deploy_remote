@@ -2,9 +2,10 @@
 
 profile=$1
 version=$2
+port=$3
 
 # 远程执行
 ssh root@www.scyok.com << remotessh
-/mnt/src/cached/build/deploy $profile $version
+/mnt/src/cached/build/deploy $profile $version $port
 exit
 remotessh
